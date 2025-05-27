@@ -4,60 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="title">LifeSync - Deepen Your Connections</title>
-    <link rel="stylesheet" href="css/shared.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
+    <link rel="stylesheet" href="css/styles.css">
 
     <script src="https://unpkg.com/i18next@23.11.5/dist/umd/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-browser-languagedetector@7.1.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
-    
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <script>
-        // Define global Firebase config variables if not injected by an environment like Canvas
-        // For local testing, you would uncomment and fill these.
-        // if (typeof __firebase_config === 'undefined') {
-        //     const __firebase_config = JSON.stringify({
-        //         apiKey: "YOUR_API_KEY",
-        //         authDomain: "YOUR_AUTH_DOMAIN",
-        //         projectId: "YOUR_PROJECT_ID",
-        //         storageBucket: "YOUR_STORAGE_BUCKET",
-        //         messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        //         appId: "YOUR_APP_ID",
-        //         measurementId: "YOUR_MEASUREMENT_ID"
-        //     });
-        //     const __initial_auth_token = null; // Or your test token
-        //     const __app_id = 'lifesync-local-test';
-        // }
-    </script>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-    <video autoplay muted loop playsinline id="video-background" poster="https://placehold.co/1920x1080/301934/FDE7F3?text=LifeSync+Background">
-        <source src="https://www.coverr.co/s3/mp4/Abstract_Plexus.mp4" type="video/mp4" onerror="this.parentElement.style.backgroundColor='var(--bg-dark-purple)';">
-        Your browser does not support the video tag.
-    </video>
+    <div id="svg-background-container">
+        <svg id="svg-background" preserveAspectRatio="xMidYMid slice" viewBox="0 0 100 100">
+            <!-- 
+                Placeholder for your SVG background.
+                You can create abstract shapes, lines, gradients here.
+                Example: A simple radial gradient
+            -->
+            <defs>
+                <radialGradient id="infinityGradient" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:var(--accent-purple-medium);stop-opacity:0.15" />
+                    <stop offset="60%" style="stop-color:var(--accent-pink-vibrant);stop-opacity:0.1" />
+                    <stop offset="100%" style="stop-color:var(--bg-dark-purple);stop-opacity:0.2" />
+                </radialGradient>
+                 <filter id="subtleBlur"><feGaussianBlur stdDeviation="1" /></filter>
+            </defs>
+            <rect width="100" height="100" fill="url(#infinityGradient)" />
+            <path d="M0,10 C20,30 40,0 60,20 S100,40 100,40 L100,0 Z" fill="var(--accent-teal-bright)" opacity="0.05" />
+            <path d="M0,90 C20,70 40,100 60,80 S100,60 100,60 L100,100 Z" fill="var(--accent-teal-bright)" opacity="0.05" />
+            <circle cx="15" cy="85" r="25" fill="var(--accent-pink-vibrant)" opacity="0.07" filter="url(#subtleBlur)"/>
+            <circle cx="85" cy="15" r="30" fill="var(--accent-purple-medium)" opacity="0.07" filter="url(#subtleBlur)"/>
+        </svg>
+    </div>
 
     <nav role="navigation" aria-label="Main navigation">
-        <a href="index.html" class="nav-brand"><i class="fas fa-sync-alt"></i> <span data-i18n="nav.brand">LifeSync</span></a>
+        <a href="index.html" class="nav-brand" data-page="home"><i class="fas fa-sync-alt"></i> <span data-i18n="nav.brand">LifeSync</span></a>
         <div class="nav-links">
-            <a href="index.html" data-target="about" class="active-nav"><i class="fa-solid fa-house"></i> <span data-i18n="nav.home">Home</span></a>
-            <a href="assessments.html" data-target="assessments"><i class="fa-solid fa-tasks"></i> <span data-i18n="nav.assessments">Assessments</span></a>
-            <a href="tools.html" data-target="tools"><i class="fa-solid fa-tools"></i> <span data-i18n="nav.tools">Tools</span></a>
-            <a href="resources.html" data-target="resources"><i class="fa-solid fa-book-open"></i> <span data-i18n="nav.resources">Resources</span></a>
-            <a href="ugq.html" data-target="ugq"><i class="fas fa-question-circle"></i> <span data-i18n="nav.ugq" class="nav-text-short">My Q's</span><span class="nav-text-long" data-i18n="profile.ugqTitleLong">My Questions</span></a> 
-            <a href="profile.html" data-target="profile" id="navProfileLink" style="display:none;"><i class="fa-solid fa-user-circle"></i> <span data-i18n="nav.profile">My Profile</span></a>
+            <a href="index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i> <span data-i18n="nav.home">Home</span></a>
+            <a href="assessments.html" class="nav-link" data-page="assessments"><i class="fa-solid fa-tasks"></i> <span data-i18n="nav.assessments">Assessments</span></a>
+            <a href="tools.html" class="nav-link" data-page="tools"><i class="fa-solid fa-tools"></i> <span data-i18n="nav.tools">Tools</span></a>
+            <a href="resources.html" class="nav-link" data-page="resources"><i class="fa-solid fa-book-open"></i> <span data-i18n="nav.resources">Resources</span></a>
+            <a href="ugq.html" class="nav-link" data-page="ugq"><i class="fas fa-question-circle"></i> <span data-i18n="profile.ugqTitle" class="nav-text-short">My Q's</span><span class="nav-text-long" data-i18n="profile.ugqTitleLong">My Questions</span></a>
+            <a href="profile.html" class="nav-link" id="navProfileBtn" style="display:none;" data-page="profile"><i class="fa-solid fa-user-circle"></i> <span data-i18n="nav.profile">My Profile</span></a>
             
             <button class="auth-button login-btn" id="loginBtnNav"><i class="fa-solid fa-sign-in-alt"></i> <span data-i18n="nav.login">Login</span></button>
             <button class="auth-button" id="registerBtnNav"><i class="fa-solid fa-user-plus"></i> <span data-i18n="nav.register">Register</span></button>
@@ -79,65 +72,67 @@
         </div>
     </nav>
 
-    <main class="main-page-content landing-page-container" role="main" aria-labelledby="about-heading">
-        <div class="hero-section" style="background-image: linear-gradient(rgba(45, 25, 55, 0.85), rgba(30, 10, 40, 0.98)), url('https://images.unsplash.com/photo-1503435824048-a79953604125?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80&blend=301934&blend-mode=multiply&blend-alpha=50');">
-            <h1 id="about-heading" data-i18n="landing.heroTitle">Beyond the Swipe: Discover True Compatibility</h1>
-            <p class="subtitle" data-i18n="landing.heroSubtitle">LifeSync empowers you to understand yourself and what you truly need in any significant relationship. Build your dynamic, lifelong profile, 'Sync Up' for profound connections, and always be ready for your best relationship journey.</p>
-        </div>
-        
-        <div class="benefits-title-section">
-            <h2 data-i18n="landing.benefitsTitle">Why LifeSync? The Path to Deeper Understanding.</h2>
-            <p data-i18n="landing.benefitsSubtitle">LifeSync is more than an app; it's your companion for relationship clarity and growth.</p>
-        </div>
+    <div class="page-container">
+        <main id="home-content" class="content-section-wrapper" role="main" aria-labelledby="home-heading-tile1">
+            <div class="page-content-scroller" id="home-page-scroller">
+                
+                <div class="content-section-tile" id="hero-tile">
+                    <div class="hero-section"> <h1 id="home-heading-tile1" data-i18n="landing.heroTitle">Beyond the Swipe: Discover True Compatibility</h1>
+                        <p class="subtitle" data-i18n="landing.heroSubtitle">LifeSync empowers you to understand yourself and what you truly need in any significant relationship. Build your dynamic, lifelong profile, 'Sync Up' for profound connections, and always be ready for your best relationship journey.</p>
+                        <a href="assessments.html" class="btn btn-primary" data-i18n="landing.heroCta">Explore Assessments</a>
+                    </div>
+                </div>
 
-        <div class="benefits-background-container">
-            <svg class="benefits-background-svg" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                    <linearGradient id="grad1Landing" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:var(--accent-purple-medium);stop-opacity:0.5" />
-                        <stop offset="100%" style="stop-color:var(--accent-pink-vibrant);stop-opacity:0.5" />
-                    </linearGradient>
-                    <filter id="blurFilterLanding">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
-                    </filter>
-                </defs>
-                <circle cx="30" cy="30" r="25" fill="url(#grad1Landing)" filter="url(#blurFilterLanding)"/>
-                <circle cx="170" cy="70" r="30" fill="url(#grad1Landing)" opacity="0.7" filter="url(#blurFilterLanding)"/>
-                <path d="M0,50 Q50,20 100,50 T200,50" stroke="var(--accent-teal-bright)" stroke-width="1" fill="none" opacity="0.4"/>
-                <path d="M0,60 Q60,90 120,60 T200,70" stroke="var(--accent-pink-vibrant)" stroke-width="0.5" fill="none" opacity="0.3"/>
-            </svg>
-            <div class="benefits-grid">
-                <div class="benefit-card" data-benefit-id="benefit1">
-                    <i class="fas fa-user-edit"></i> <h3 data-i18n="landing.benefit1.title">Build Your Lifelong Profile</h3>
-                    <p data-i18n="landing.benefit1.description">Create a rich, evolving profile that captures your values, preferences, and experiences – your personal relationship blueprint.</p>
+                <div class="content-section-tile" id="benefits-tile">
+                    <div class="benefits-title-section">
+                        <h2 data-i18n="landing.benefitsTitle">Why LifeSync? The Path to Deeper Understanding.</h2>
+                        <p data-i18n="landing.benefitsSubtitle">LifeSync is more than an app; it's your companion for relationship clarity and growth.</p>
+                    </div>
+                    <div class="benefits-background-container">
+                        <svg class="benefits-background-svg" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true">
+                           <defs>
+                                <linearGradient id="gradBenefitTile" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:var(--accent-purple-medium);stop-opacity:0.05" />
+                                    <stop offset="100%" style="stop-color:var(--accent-pink-vibrant);stop-opacity:0.05" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="200" height="100" fill="url(#gradBenefitTile)" />
+                        </svg>
+                        <div class="benefits-grid">
+                            <div class="benefit-card" data-benefit-id="benefit1">
+                                <i class="fas fa-user-edit"></i> <h3 data-i18n="landing.benefit1.title">Build Your Lifelong Profile</h3>
+                                <p data-i18n="landing.benefit1.description">Create a rich, evolving profile that captures your values, preferences, and experiences – your personal relationship blueprint.</p>
+                            </div>
+                            <div class="benefit-card" data-benefit-id="benefit2">
+                                <i class="fas fa-brain"></i> <h3 data-i18n="landing.benefit2.title">Understand Yourself Deeper</h3>
+                                <p data-i18n="landing.benefit2.description">Engage with 150+ culturally aware questions. Gain personalized insights into your needs and compatibility factors.</p>
+                            </div>
+                            <div class="benefit-card" data-benefit-id="benefit3">
+                                <i class="fas fa-people-arrows"></i> <h3 data-i18n="landing.benefit3.title">Ready to 'Sync Up'?</h3>
+                                <p data-i18n="landing.benefit3.description">Connect with a partner on a new level. Securely share and compare what truly matters, with full, granular consent.</p>
+                            </div>
+                            <div class="benefit-card" data-benefit-id="benefitImport">
+                                <i class="fas fa-file-import"></i> <h3 data-i18n="landing.benefitImport.title">Seamless Profile Building</h3>
+                                <p data-i18n="landing.benefitImport.description">Easily import data from existing social/dating profiles or use AI assistance to extract info from documents like your CV. Spend less time typing, more time connecting.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="benefit-card" data-benefit-id="benefit2">
-                    <i class="fas fa-brain"></i> <h3 data-i18n="landing.benefit2.title">Understand Yourself Deeper</h3>
-                    <p data-i18n="landing.benefit2.description">Engage with 150+ culturally aware questions. Gain personalized insights into your needs and compatibility factors.</p>
-                </div>
-                <div class="benefit-card" data-benefit-id="benefit3">
-                    <i class="fas fa-people-arrows"></i> <h3 data-i18n="landing.benefit3.title">Ready to 'Sync Up'?</h3>
-                    <p data-i18n="landing.benefit3.description">Connect with a partner on a new level. Securely share and compare what truly matters, with full, granular consent.</p>
-                </div>
-                 <div class="benefit-card" data-benefit-id="benefitImport">
-                    <i class="fas fa-file-import"></i> <h3 data-i18n="landing.benefitImport.title">Seamless Profile Building</h3>
-                    <p data-i18n="landing.benefitImport.description">Easily import data from existing social/dating profiles or use AI assistance to extract info from documents like your CV. Spend less time typing, more time connecting.</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="landing-cta-section">
-             <h2 data-i18n="landing.getStartedTitle">Ready to Begin Your Journey?</h2>
-             <p data-i18n="landing.getStartedSubtitle">Create your free LifeSync profile today and take the first step towards more meaningful connections.</p>
-            <a href="assessments.html" class="btn btn-primary" data-i18n="landing.takeAssessmentCta">Take an Assessment</a>
-            <button class="btn btn-secondary" id="registerBtnLanding" data-i18n="landing.registerNow">Register Your Profile</button>
-            <button class="btn btn-purple" id="loginBtnLanding" data-i18n="landing.loginExisting">Login</button>
-        </div>
-    </main>
-
-    <div id="notificationsArea" class="notifications-area" role="alert" aria-live="polite">
-        <div class="notification-item" data-i18n="notifications.welcome" style="display:none;">Welcome to LifeSync! Complete your profile to get started.</div>
+                <div class="content-section-tile" id="cta-tile">
+                    <div class="landing-cta-section">
+                        <h2 data-i18n="landing.getStartedTitle">Ready to Begin Your Journey?</h2>
+                        <p data-i18n="landing.getStartedSubtitle">Create your free LifeSync profile today and take the first step towards more meaningful connections.</p>
+                        <a href="assessments.html" class="btn btn-primary" data-i18n="landing.takeAssessmentCta">Take an Assessment</a>
+                        <button class="btn btn-secondary" id="registerBtnLanding" data-i18n="landing.registerNow">Register Your Profile</button>
+                        <button class="btn btn-purple" id="loginBtnLanding" data-i18n="landing.loginExisting">Login</button>
+                    </div>
+                </div>
+                </div>
+        </main>
     </div>
+
+    <div id="notificationsArea" class="notifications-area" role="alert" aria-live="polite"></div>
     <button id="globalSearchTriggerBtn" class="btn" title="Search LifeSync" aria-label="Search LifeSync"><i class="fas fa-search"></i></button>
 
     <footer>
@@ -147,137 +142,63 @@
         <span data-i18n="footer.built">Built with <i class="fa-solid fa-heart" style="color: var(--accent-pink-vibrant)"></i> for LifeSync.</span>
     </footer>
 
-    <div id="loginModal" class="modal" data-modal-id="loginModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2><i class="fa-solid fa-sign-in-alt mr-2" style="color:var(--accent-purple-medium)"></i> <span data-i18n="login.title">Login to LifeSync</span></h2>
-            <p class="text-sm mb-4" data-i18n="login.subtitle">Access your profile, assessments, and synced data.</p>
-            <form id="loginForm">
-                <div class="form-field-group"> <label for="loginEmail" data-i18n="login.emailLabel">Email:</label> <input type="email" id="loginEmail" class="input-field" data-i18n-placeholder="login.emailPlaceholder" placeholder="your@email.com" required> </div>
-                <div class="form-field-group"> <label for="loginPassword" data-i18n="login.passwordLabel">Password:</label> <input type="password" id="loginPassword" class="input-field" data-i18n-placeholder="login.passwordPlaceholder" placeholder="Your password" required> </div>
-                <button type="submit" class="btn btn-primary w-full" data-i18n="login.submit">Login</button>
-            </form>
-            <button class="btn btn-secondary w-full mt-2" id="googleLoginBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="login.google">Login with Google</span></button>
-            <div class="mt-4">
-                <p class="text-sm" data-i18n="login.tempProfilePrompt">Don't want to sign in? Try LifeSync with a temporary profile:</p>
-                <button class="btn btn-purple w-full mt-2" data-modal-target="tempProfileModal" data-modal-close="loginModal" data-i18n="login.tempProfileBtn">Create Temporary Profile</button>
-                <button class="btn btn-purple w-full mt-2" data-modal-target="tempProfileLoginModal" data-modal-close="loginModal" data-i18n="login.loginTempProfileBtn">Login with Temporary Code</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="registerModal" class="modal" data-modal-id="registerModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2><i class="fa-solid fa-user-plus mr-2" style="color:var(--accent-pink-vibrant)"></i> <span data-i18n="register.title">Create Your LifeSync Account</span></h2>
-            <p class="text-sm mb-4" data-i18n="register.subtitle">Start building your insightful relationship profile.</p>
-            <form id="registerForm">
-                <div class="form-field-group"> <label for="registerName" data-i18n="register.nameLabel">Name:</label> <input type="text" id="registerName" class="input-field" data-i18n-placeholder="register.namePlaceholder" placeholder="Your Name" required> </div>
-                <div class="form-field-group"> <label for="registerEmail" data-i18n="register.emailLabel">Email:</label> <input type="email" id="registerEmail" class="input-field" data-i18n-placeholder="register.emailPlaceholder" placeholder="your@email.com" required> </div>
-                <div class="form-field-group"> <label for="registerPassword" data-i18n="register.passwordLabel">Password:</label> <input type="password" id="registerPassword" class="input-field" data-i18n-placeholder="register.passwordPlaceholder" placeholder="Create a password (min. 6 characters)" required> </div>
-                <button type="submit" class="btn btn-secondary w-full" data-i18n="register.submit">Register</button>
-            </form>
-            <button class="btn btn-secondary w-full mt-2" id="googleRegisterBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="register.google">Register with Google</span></button>
-        </div>
-    </div>
-
-    <div id="tempProfileModal" class="modal" data-modal-id="tempProfileModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 data-i18n="tempProfile.title">Create Temporary Profile</h2>
-            <p class="text-sm mb-4" data-i18n="tempProfile.subtitle">Create a temporary profile to explore LifeSync for 90 days.</p>
-            <form id="tempProfileForm">
-                <div class="form-field-group"> <label for="tempUsername" data-i18n="tempProfile.usernameLabel">Username:</label> <input type="text" id="tempUsername" class="input-field" data-i18n-placeholder="tempProfile.usernamePlaceholder" placeholder="Choose a username" required> </div>
-                <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfile.createBtn">Create Profile & Get Code</button>
-            </form>
-            <div id="tempProfileCodeSection" class="mt-4" style="display:none;">
-                <p data-i18n="tempProfile.codeInstructions">Your temporary profile has been created! Use this code to log in:</p>
-                <p class="text-2xl font-bold my-2 p-2 rounded" id="tempProfileCodeDisplay" style="background-color: var(--bg-content-purple-opaque); user-select:all;"></p>
-                <p class="text-xs mt-2" data-i18n="tempProfile.expiryNote">This profile will expire in 90 days. Save your username and code securely!</p>
-                <button class="btn btn-secondary mt-3" id="tempProfileGotItBtn" data-modal-close="tempProfileModal" data-i18n="tempProfile.gotItBtn">I've Saved It!</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="tempProfileLoginModal" class="modal" data-modal-id="tempProfileLoginModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 data-i18n="tempProfileLogin.title">Login with Temporary Profile</h2>
-            <form id="tempProfileLoginForm">
-                <div class="form-field-group"> <label for="tempLoginUsername" data-i18n="tempProfileLogin.usernameLabel">Username:</label> <input type="text" id="tempLoginUsername" class="input-field" data-i18n-placeholder="tempProfileLogin.usernamePlaceholder" placeholder="Your username" required> </div>
-                <div class="form-field-group"> <label for="tempLoginCode" data-i18n="tempProfileLogin.codeLabel">Code:</label> <input type="text" id="tempLoginCode" class="input-field" data-i18n-placeholder="tempProfileLogin.codePlaceholder" placeholder="Your access code" required> </div>
-                <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfileLogin.submit">Login</button>
-            </form>
-        </div>
-    </div>
+    <div id="loginModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="loginModal">&times;</span> <h2 data-i18n="login.title">Login to LifeSync</h2> <p class="text-sm mb-4" data-i18n="login.subtitle">Access your profile, assessments, and synced data.</p> <form id="loginForm"> <div class="form-field-group"> <label for="loginEmail" data-i18n="login.emailLabel">Email:</label> <input type="email" id="loginEmail" class="input-field" data-i18n-placeholder="login.emailPlaceholder" placeholder="your@email.com" required> </div> <div class="form-field-group"> <label for="loginPassword" data-i18n="login.passwordLabel">Password:</label> <input type="password" id="loginPassword" class="input-field" data-i18n-placeholder="login.passwordPlaceholder" placeholder="Your password" required> </div> <button type="submit" class="btn btn-primary w-full" data-i18n="login.submit">Login</button> </form> <button class="btn btn-secondary w-full mt-2" id="googleLoginBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="login.google">Login with Google</span></button> <div class="mt-4"> <p class="text-sm" data-i18n="login.tempProfilePrompt">Don't want to sign in? Try LifeSync with a temporary profile:</p> <button class="btn btn-purple w-full mt-2" id="createTempProfileFromLoginModalBtn" data-i18n="login.tempProfileBtn">Create Temporary Profile</button> <button class="btn btn-purple w-full mt-2" id="loginWithTempProfileModalBtn" data-i18n="login.loginTempProfileBtn">Login with Temporary Code</button> </div> </div> </div>
+    <div id="registerModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="registerModal">&times;</span> <h2 data-i18n="register.title">Create Your LifeSync Account</h2> <p class="text-sm mb-4" data-i18n="register.subtitle">Start building your insightful relationship profile.</p> <form id="registerForm"> <div class="form-field-group"> <label for="registerName" data-i18n="register.nameLabel">Name:</label> <input type="text" id="registerName" class="input-field" data-i18n-placeholder="register.namePlaceholder" placeholder="Your Name" required> </div> <div class="form-field-group"> <label for="registerEmail" data-i18n="register.emailLabel">Email:</label> <input type="email" id="registerEmail" class="input-field" data-i18n-placeholder="register.emailPlaceholder" placeholder="your@email.com" required> </div> <div class="form-field-group"> <label for="registerPassword" data-i18n="register.passwordLabel">Password:</label> <input type="password" id="registerPassword" class="input-field" data-i18n-placeholder="register.passwordPlaceholder" placeholder="Create a password (min. 6 characters)" required> </div> <button type="submit" class="btn btn-secondary w-full" data-i18n="register.submit">Register</button> </form> <button class="btn btn-secondary w-full mt-2" id="googleRegisterBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="register.google">Register with Google</span></button> </div> </div>
+    <div id="tempProfileModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="tempProfileModal">&times;</span> <h2 data-i18n="tempProfile.title">Create Temporary Profile</h2> <p class="text-sm mb-4" data-i18n="tempProfile.subtitle">Create a temporary profile to explore LifeSync for 90 days.</p> <form id="tempProfileForm"> <div class="form-field-group"> <label for="tempUsername" data-i18n="tempProfile.usernameLabel">Username:</label> <input type="text" id="tempUsername" class="input-field" data-i18n-placeholder="tempProfile.usernamePlaceholder" placeholder="Choose a username" required> </div> <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfile.createBtn">Create Profile & Get Code</button> </form> <div id="tempProfileCodeSection" class="mt-4" style="display:none;"> <p data-i18n="tempProfile.codeInstructions">Your temporary profile has been created! Use this code to log in:</p> <p class="text-2xl font-bold my-2 p-2 rounded" id="tempProfileCodeDisplay" style="background-color: var(--bg-content-purple-opaque); user-select:all;"></p> <p class="text-xs mt-2" data-i18n="tempProfile.expiryNote">This profile will expire in 90 days. Save your username and code securely!</p> <button class="btn btn-secondary mt-3" id="tempProfileGotItBtn" data-i18n="tempProfile.gotItBtn">I've Saved It!</button> </div> </div> </div>
+    <div id="tempProfileLoginModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="tempProfileLoginModal">&times;</span> <h2 data-i18n="tempProfileLogin.title">Login with Temporary Profile</h2> <form id="tempProfileLoginForm"> <div class="form-field-group"> <label for="tempLoginUsername" data-i18n="tempProfileLogin.usernameLabel">Username:</label> <input type="text" id="tempLoginUsername" class="input-field" data-i18n-placeholder="tempProfileLogin.usernamePlaceholder" placeholder="Your username" required> </div> <div class="form-field-group"> <label for="tempLoginCode" data-i18n="tempProfileLogin.codeLabel">Code:</label> <input type="text" id="tempLoginCode" class="input-field" data-i18n-placeholder="tempProfileLogin.codePlaceholder" placeholder="Your access code" required> </div> <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfileLogin.submit">Login</button> </form> </div> </div>
+    <div id="searchModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="searchModal">&times;</span> <h2 data-i18n="search.title"><i class="fas fa-search mr-2"></i> Search LifeSync</h2> <input type="text" id="searchInput" class="input-field" data-i18n-placeholder="search.placeholder" placeholder="Search profiles, assessments, resources..."> <button class="btn btn-primary w-full mt-3" id="searchSubmitBtn" data-i18n="search.submit">Search</button> <div id="searchResults" class="mt-4 max-h-60 overflow-y-auto"></div> </div> </div>
+    <div id="benefitModal" class="modal"> <div class="modal-content"> <span class="close-button" data-modal-id="benefitModal">&times;</span> <h2 id="benefitModalTitle" class="text-xl mb-4">Benefit Details</h2> <p id="benefitModalDescription" class="text-sm mb-6">More information here.</p> <button id="benefitModalCloseBtn" class="btn btn-primary w-full" data-i18n="landing.learnMoreClose">Close</button> </div> </div>
     
-    <div id="searchModal" class="modal" data-modal-id="searchModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 data-i18n="search.title"><i class="fas fa-search mr-2"></i> Search LifeSync</h2>
-            <input type="text" id="searchInput" class="input-field" data-i18n-placeholder="search.placeholder" placeholder="Search profiles, assessments, resources...">
-            <button class="btn btn-primary w-full mt-3" id="searchSubmitBtn" data-i18n="search.submit">Search</button>
-            <div id="searchResults" class="mt-4 max-h-60 overflow-y-auto"></div>
-        </div>
-    </div>
-
-    <div id="benefitModal" class="modal" data-modal-id="benefitModal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="benefitModalTitle" class="text-xl mb-4"></h2>
-            <p id="benefitModalDescription" class="text-sm mb-6"></p>
-            <button id="benefitModalCloseBtn" class="btn btn-primary w-full" data-i18n="landing.learnMoreClose">Close</button>
-        </div>
-    </div>
-
-    <script src="js/shared.js" type="module"></script> 
-    
+    <script type="module" src="js/main.js"></script>
     <script type="module">
-        // Any JavaScript specific to index.html (landing page) can go here.
-        // For now, most logic is in shared.js or handled by direct HTML onclicks.
-        console.log("index.html specific script loaded.");
+        // Page-specific JS for index.html (Benefit Cards interaction & landing page CTAs)
+        document.addEventListener('DOMContentLoaded', () => {
+            const ensureGlobalsInterval = setInterval(() => {
+                if (window.i18next && typeof window.i18next.t === 'function' && 
+                    typeof window.showModal === 'function' && 
+                    typeof window.closeModal === 'function') {
+                    clearInterval(ensureGlobalsInterval);
+                    initializeIndexPageSpecificLogic();
+                }
+            }, 100);
+        });
 
-        // Example: Make benefit cards interactive if not already handled by shared.js
-        document.querySelectorAll('#about .benefit-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const benefitId = card.dataset.benefitId;
-                if (window.LifeSyncShared && typeof window.LifeSyncShared.handleBenefitCardClick === 'function') {
-                    window.LifeSyncShared.handleBenefitCardClick(benefitId); // Assuming this function is exposed
-                } else {
-                    // Fallback or direct modal open if function not on shared
+        function initializeIndexPageSpecificLogic() {
+            const benefitCards = document.querySelectorAll('.benefit-card');
+            const benefitModalEl = document.getElementById('benefitModal');
+            const benefitModalTitleEl = document.getElementById('benefitModalTitle');
+            const benefitModalDescriptionEl = document.getElementById('benefitModalDescription');
+            const benefitModalCloseBtnEl = document.getElementById('benefitModalCloseBtn');
+
+            benefitCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const benefitId = card.dataset.benefitId;
+                    if (!benefitModalEl || !benefitModalTitleEl || !benefitModalDescriptionEl || !window.i18next) return;
+                
                     const titleKey = `landing.${benefitId}.title`;
                     const descriptionKey = `landing.${benefitId}.description`;
-                    document.getElementById('benefitModalTitle').textContent = window.i18next.t(titleKey, {defaultValue: "Benefit Details"});
-                    document.getElementById('benefitModalDescription').textContent = window.i18next.t(descriptionKey, {defaultValue: "More information about this benefit will be available here."});    
-                    window.LifeSyncShared.showModal('benefitModal');
-                }
+
+                    benefitModalTitleEl.textContent = window.i18next.t(titleKey, {defaultValue: "Benefit Details"});
+                    benefitModalDescriptionEl.textContent = window.i18next.t(descriptionKey, {defaultValue: "More information about this benefit."}); 
+                    
+                    window.showModal('benefitModal');
+                });
             });
-        });
-        document.getElementById('benefitModalCloseBtn')?.addEventListener('click', () => window.LifeSyncShared.closeModal('benefitModal'));
 
-        // Ensure landing page CTAs for modals work
-        document.getElementById('registerBtnLanding')?.addEventListener('click', () => window.LifeSyncShared.showModal('registerModal'));
-        document.getElementById('loginBtnLanding')?.addEventListener('click', () => window.LifeSyncShared.showModal('loginModal'));
-
-
-        // Override page-specific update function for index.html if needed
-        window.LifeSyncShared.updatePageSpecificOnAuthStateChange = (user, tempProfile) => {
-            console.log("index.html: Auth state change detected.");
-            // No specific UI elements on index.html need to change beyond what shared.js handles (nav bar)
-        };
-         window.LifeSyncShared.updatePageSpecificOnUserData = (data) => {
-            console.log("index.html: User data fetched/updated.");
-            // No specific UI elements on index.html need to change based on user data for now
-        };
-         window.LifeSyncShared.initializePageSpecificDynamicContent = () => {
-            console.log("index.html: Initializing page-specific dynamic content.");
-            // Re-apply translations or other dynamic updates if language changes
-            if(window.i18next && window.i18next.isInitialized) {
-                window.LifeSyncShared.updateUIWithTranslations();
+            if(benefitModalCloseBtnEl) {
+                benefitModalCloseBtnEl.addEventListener('click', () => window.closeModal('benefitModal'));
             }
-        };
 
+            const registerBtnLanding = document.getElementById('registerBtnLanding');
+            const loginBtnLanding = document.getElementById('loginBtnLanding');
 
+            if(registerBtnLanding) {
+                registerBtnLanding.addEventListener('click', () => window.showModal('registerModal'));
+            }
+            if(loginBtnLanding) {
+                loginBtnLanding.addEventListener('click', () => window.showModal('loginModal'));
+            }
+        }
     </script>
 </body>
 </html>
