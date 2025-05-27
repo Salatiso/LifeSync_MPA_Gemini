@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">LifeSync - Assessments</title> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://unpkg.com/i18next@23.11.5/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@7.1.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <video autoplay muted loop playsinline id="video-background" poster="https://placehold.co/1920x1080/301934/FDE7F3?text=LifeSync+Background">
+        <source src="https://www.coverr.co/s3/mp4/Abstract_Plexus.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-brand" data-page="home"><i class="fas fa-sync-alt"></i> <span data-i18n="nav.brand">LifeSync</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link" data-page="home"><i class="fa-solid fa-house"></i> <span data-i18n="nav.home">Home</span></a>
+            <a href="assessments.html" class="nav-link" data-page="assessments"><i class="fa-solid fa-tasks"></i> <span data-i18n="nav.assessments">Assessments</span></a>
+            <a href="tools.html" class="nav-link" data-page="tools"><i class="fa-solid fa-tools"></i> <span data-i18n="nav.tools">Tools</span></a>
+            <a href="resources.html" class="nav-link" data-page="resources"><i class="fa-solid fa-book-open"></i> <span data-i18n="nav.resources">Resources</span></a>
+            <a href="ugq.html" class="nav-link" data-page="ugq"><i class="fas fa-question-circle"></i> <span data-i18n="profile.ugqTitle" class="nav-text-short">My Q's</span><span class="nav-text-long" data-i18n="profile.ugqTitleLong">My Questions</span></a>
+            <a href="profile.html" class="nav-link" id="navProfileBtn" style="display:none;" data-page="profile"><i class="fa-solid fa-user-circle"></i> <span data-i18n="nav.profile">My Profile</span></a>
+            
+            <button class="auth-button login-btn" id="loginBtnNav"><i class="fa-solid fa-sign-in-alt"></i> <span data-i18n="nav.login">Login</span></button>
+            <button class="auth-button" id="registerBtnNav"><i class="fa-solid fa-user-plus"></i> <span data-i18n="nav.register">Register</span></button>
+            <button class="auth-button" id="logoutBtnNav" style="display:none;"><i class="fa-solid fa-sign-out-alt"></i> <span data-i18n="nav.logout">Logout</span></button>
+            
+            <select id="languageSelector" aria-label="Select Language">
+                <option value="en">English</option>
+                <option value="xh">isiXhosa</option>
+                <option value="zu">isiZulu</option>
+                <option value="af">Afrikaans</option>
+                <option value="nso">Sepedi</option>
+                <option value="st">Sesotho</option>
+                <option value="tn">Setswana</option>
+                <option value="ss">siSwati</option>
+                <option value="ts">Xitsonga</option>
+                <option value="ve">Tshivenda</option>
+                <option value="nr">isiNdebele</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <main id="assessments" class="content-section" role="region" aria-labelledby="assessments-heading">
+            <h2 id="assessments-heading" class="text-center" data-i18n="assessments.title">Discover Your Compatibility</h2>
+            <p class="text-center mb-6" data-i18n="assessments.subtitle">Engage with our assessments to gain valuable insights into your relationship dynamics. Assign weights to what matters most to you!</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="assessment-container">
+                    <h3 class="form-title"><i class="fas fa-rocket mr-2"></i> <span data-i18n="assessments.quickCompat.title">Quick Compatibility Check</span></h3>
+                    <p data-i18n="assessments.quickCompat.description">A fast way for you and a potential partner to get an initial feel for alignment. Choose your depth!</p>
+                    <div id="quickCompatLevelSelector" class="my-4 text-center">
+                        <button class="btn btn-secondary btn-sm" data-level="basic" data-i18n="assessments.quickCompat.basicBtn">Quick Sync (5 Q's)</button>
+                        <button class="btn btn-secondary btn-sm" data-level="intermediate" data-i18n="assessments.quickCompat.intermediateBtn">Deeper Dive (10 Q's)</button>
+                        <button class="btn btn-secondary btn-sm" data-level="advanced" data-i18n="assessments.quickCompat.advancedBtn">Full Spectrum (15 Q's)</button>
+                    </div>
+                    <div id="quickCompatQuizArea" style="display:none;">
+                        <div class="quiz-question">
+                            <h4 id="quickCompatQuestionText" class="text-lg mb-2"></h4>
+                            <div class="quiz-options" id="quickCompatOptionsArea"></div>
+                            <div class="weight-slider mt-3">
+                                <label for="quickCompatWeight" data-i18n="assessments.quickCompat.importanceLabel">Importance (1-5):</label>
+                                <input type="range" id="quickCompatWeight" name="quickCompatWeight" min="1" max="5" value="3">
+                                <span id="quickCompatWeightValue">3</span>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="quickCompatFeedbackArea"></div>
+                        <p class="text-xs mt-3 text-center"><span data-i18n="assessments.quickCompat.progressQuestion">Question</span> <span id="quickCompatCounter">1</span> <span data-i18n="assessments.quickCompat.progressOf">of</span> <span id="quickCompatTotal">5</span></p>
+                        <div class="progress-bar-container mt-2"><div class="progress-bar-fill" id="quickCompatProgressBar">0%</div></div>
+                        <button id="quickCompatNextBtn" class="btn btn-primary w-full mt-4" data-i18n="assessments.quickCompat.nextBtn">Next</button>
+                    </div>
+                    <div id="quickCompatResultArea" style="display:none;" class="mt-4 text-center">
+                        <h4 class="text-xl" style="color: var(--accent-teal-bright);" data-i18n="assessments.quickCompat.resultsTitle">Quick Sync Results!</h4>
+                        <p id="quickCompatFinalFeedback" class="my-2"></p>
+                        <button class="btn btn-secondary" id="resetQuickCompatBtn" data-i18n="assessments.quickCompat.retryBtn">Try Another Level</button>
+                    </div>
+                </div>
+
+                <div class="assessment-container">
+                    <h3 class="form-title"><i class="fas fa-user-edit mr-2"></i> <span data-i18n="assessments.profileBuilder.title">My Relationship Profile Builder</span></h3>
+                    <p data-i18n="assessments.profileBuilder.description">Build your detailed LifeSync profile by answering these questions about your views, preferences, lifestyle, and more. This forms the basis for future syncs and deeper insights.</p>
+                    <div id="relationshipDetailsQuizArea">
+                        <div class="quiz-question">
+                            <h4 id="detailsQuestionText" class="text-lg mb-2"></h4>
+                            <div class="quiz-options" id="detailsOptionsArea"></div>
+                            <div class="weight-slider mt-3">
+                                <label for="detailsWeight" data-i18n="assessments.profileBuilder.importanceLabel">How crucial is this for you? (1-5):</label>
+                                <input type="range" id="detailsWeight" name="detailsWeight" min="1" max="5" value="3">
+                                <span id="detailsWeightValue">3</span>
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="detailsFeedbackArea"></div>
+                        <p class="text-xs mt-3 text-center"><span data-i18n="assessments.profileBuilder.progressQuestion">Question</span> <span id="detailsCounter">1</span> <span data-i18n="assessments.profileBuilder.progressOf">of</span> <span id="detailsTotal">10</span></p>
+                        <div class="progress-bar-container mt-2"><div class="progress-bar-fill" id="detailsProgressBar">0%</div></div>
+                        <button id="detailsNextBtn" class="btn btn-primary w-full mt-4" data-i18n="assessments.profileBuilder.nextBtn">Next Question</button>
+                    </div>
+                    <div id="detailsResultArea" style="display:none;" class="mt-4 text-center">
+                        <h4 class="text-xl" style="color: var(--accent-teal-bright);" data-i18n="assessments.profileBuilder.resultsTitle">Profile Section Complete!</h4>
+                        <p id="detailsFinalFeedback" class="my-2"></p>
+                        <button class="btn btn-secondary" id="resetDetailsQuizBtn" data-i18n="assessments.profileBuilder.reviewBtn">Review Answers</button>
+                        <a href="profile.html" class="btn btn-primary" id="viewProfileFromAssessment" data-i18n="assessments.profileBuilder.viewProfileBtn">View My Profile</a>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-sm" data-i18n="assessments.note">More in-depth assessments on finances, cultural values (e.g., lobola discussions, family roles), lifestyle, and long-term goals are available once you create your profile and connect with a partner.</p>
+        </main>
+    </div>
+
+    <div id="notificationsArea" class="notifications-area" role="alert" aria-live="polite"></div>
+    <button id="globalSearchTriggerBtn" class="btn" title="Search LifeSync" aria-label="Search LifeSync"><i class="fas fa-search"></i></button>
+
+    <footer>
+        &copy; <span id="currentYearFooter"></span> Salatiso Lonwabo Mdeni - Father, OHS & Risk Expert, Author. All Rights Reserved. |&nbsp;
+        <a href="#" data-i18n="footer.privacy">Privacy Policy</a> |&nbsp;
+        <a href="#" data-i18n="footer.terms">Terms of Service</a> |&nbsp;
+        <span data-i18n="footer.built">Built with <i class="fa-solid fa-heart" style="color: var(--accent-pink-vibrant)"></i> for LifeSync.</span>
+    </footer>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="loginModal">&times;</span>
+            <h2><i class="fa-solid fa-sign-in-alt mr-2" style="color:var(--accent-purple-medium)"></i> <span data-i18n="login.title">Login to LifeSync</span></h2>
+            <p class="text-sm mb-4" data-i18n="login.subtitle">Access your profile, assessments, and synced data.</p>
+            <form id="loginForm">
+                <div class="form-field-group"> <label for="loginEmail" data-i18n="login.emailLabel">Email:</label> <input type="email" id="loginEmail" class="input-field" data-i18n-placeholder="login.emailPlaceholder" placeholder="your@email.com" required> </div>
+                <div class="form-field-group"> <label for="loginPassword" data-i18n="login.passwordLabel">Password:</label> <input type="password" id="loginPassword" class="input-field" data-i18n-placeholder="login.passwordPlaceholder" placeholder="Your password" required> </div>
+                <button type="submit" class="btn btn-primary w-full" data-i18n="login.submit">Login</button>
+            </form>
+            <button class="btn btn-secondary w-full mt-2" id="googleLoginBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="login.google">Login with Google</span></button>
+            <div class="mt-4">
+                <p class="text-sm" data-i18n="login.tempProfilePrompt">Don't want to sign in? Try LifeSync with a temporary profile:</p>
+                <button class="btn btn-purple w-full mt-2" id="createTempProfileFromLoginModalBtn" data-i18n="login.tempProfileBtn">Create Temporary Profile</button>
+                <button class="btn btn-purple w-full mt-2" id="loginWithTempProfileModalBtn" data-i18n="login.loginTempProfileBtn">Login with Temporary Code</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="registerModal">&times;</span>
+            <h2><i class="fa-solid fa-user-plus mr-2" style="color:var(--accent-pink-vibrant)"></i> <span data-i18n="register.title">Create Your LifeSync Account</span></h2>
+            <p class="text-sm mb-4" data-i18n="register.subtitle">Start building your insightful relationship profile.</p>
+            <form id="registerForm">
+                <div class="form-field-group"> <label for="registerName" data-i18n="register.nameLabel">Name:</label> <input type="text" id="registerName" class="input-field" data-i18n-placeholder="register.namePlaceholder" placeholder="Your Name" required> </div>
+                <div class="form-field-group"> <label for="registerEmail" data-i18n="register.emailLabel">Email:</label> <input type="email" id="registerEmail" class="input-field" data-i18n-placeholder="register.emailPlaceholder" placeholder="your@email.com" required> </div>
+                <div class="form-field-group"> <label for="registerPassword" data-i18n="register.passwordLabel">Password:</label> <input type="password" id="registerPassword" class="input-field" data-i18n-placeholder="register.passwordPlaceholder" placeholder="Create a password (min. 6 characters)" required> </div>
+                <button type="submit" class="btn btn-secondary w-full" data-i18n="register.submit">Register</button>
+            </form>
+            <button class="btn btn-secondary w-full mt-2" id="googleRegisterBtn"><i class="fab fa-google mr-2"></i> <span data-i18n="register.google">Register with Google</span></button>
+        </div>
+    </div>
+
+    <div id="tempProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="tempProfileModal">&times;</span>
+            <h2 data-i18n="tempProfile.title">Create Temporary Profile</h2>
+            <p class="text-sm mb-4" data-i18n="tempProfile.subtitle">Create a temporary profile to explore LifeSync for 90 days.</p>
+            <form id="tempProfileForm">
+                <div class="form-field-group"> <label for="tempUsername" data-i18n="tempProfile.usernameLabel">Username:</label> <input type="text" id="tempUsername" class="input-field" data-i18n-placeholder="tempProfile.usernamePlaceholder" placeholder="Choose a username" required> </div>
+                <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfile.createBtn">Create Profile & Get Code</button>
+            </form>
+            <div id="tempProfileCodeSection" class="mt-4" style="display:none;">
+                <p data-i18n="tempProfile.codeInstructions">Your temporary profile has been created! Use this code to log in:</p>
+                <p class="text-2xl font-bold my-2 p-2 rounded" id="tempProfileCodeDisplay" style="background-color: var(--bg-content-purple-opaque); user-select:all;"></p>
+                <p class="text-xs mt-2" data-i18n="tempProfile.expiryNote">This profile will expire in 90 days. Save your username and code securely!</p>
+                <button class="btn btn-secondary mt-3" id="tempProfileGotItBtn" data-i18n="tempProfile.gotItBtn">I've Saved It!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tempProfileLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="tempProfileLoginModal">&times;</span>
+            <h2 data-i18n="tempProfileLogin.title">Login with Temporary Profile</h2>
+            <form id="tempProfileLoginForm">
+                <div class="form-field-group"> <label for="tempLoginUsername" data-i18n="tempProfileLogin.usernameLabel">Username:</label> <input type="text" id="tempLoginUsername" class="input-field" data-i18n-placeholder="tempProfileLogin.usernamePlaceholder" placeholder="Your username" required> </div>
+                <div class="form-field-group"> <label for="tempLoginCode" data-i18n="tempProfileLogin.codeLabel">Code:</label> <input type="text" id="tempLoginCode" class="input-field" data-i18n-placeholder="tempProfileLogin.codePlaceholder" placeholder="Your access code" required> </div>
+                <button type="submit" class="btn btn-primary w-full" data-i18n="tempProfileLogin.submit">Login</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal-id="searchModal">&times;</span>
+            <h2 data-i18n="search.title"><i class="fas fa-search mr-2"></i> Search LifeSync</h2>
+            <input type="text" id="searchInput" class="input-field" data-i18n-placeholder="search.placeholder" placeholder="Search profiles, assessments, resources...">
+            <button class="btn btn-primary w-full mt-3" id="searchSubmitBtn" data-i18n="search.submit">Search</button>
+            <div id="searchResults" class="mt-4 max-h-60 overflow-y-auto"></div>
+        </div>
+    </div>
+    
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/assessments.js"></script> </body>
+</html>
